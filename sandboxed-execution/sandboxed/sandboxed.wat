@@ -1,0 +1,18 @@
+(module
+  (type (;0;) (func (param i32 i32)))
+  (type (;1;) (func))
+  (import "env" "print_str" (func $print_str (type 0)))
+  (func $rust_begin_unwind (type 1)
+    (unreachable)
+    (unreachable))
+  (func $entrypoint (type 1)
+    (call $print_str
+      (i32.const 16)
+      (i32.const 28)))
+  (table (;0;) 0 anyfunc)
+  (memory (;0;) 17)
+  (export "memory" (memory 0))
+  (export "rust_begin_unwind" (func $rust_begin_unwind))
+  (export "entrypoint" (func $entrypoint))
+  (data (i32.const 4) "0\00\10\00")
+  (data (i32.const 16) "hello from sandboxed module!"))
