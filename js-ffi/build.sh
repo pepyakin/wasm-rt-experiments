@@ -29,10 +29,12 @@ wasm-opt \
     --emit-text js_ffi.wasm -o js_ffi.legalized.wat
 
 cat js_ffi.legalized.wat |
-    sed '1 a\
-(func (export "getTempRet0") (result i32) (get_global $tempRet0))' > js_ffi.legalized.with_getTempRet0.wat
+    sed 's/(global $tempRet0 (mut i32) (i32.const 0))/& (func (export "getTempRet0") (result i32) (get_global $tempRet0)) (func (export "setTempRet0") (param i32) (set_global $tempRet0 (get_local 0)))/' > js_ffi.legalized.with_getTempRet0.wat
 
-wat2wasm ./js_ffi.legalized.with_getTempRet0.wat -o ./js_ffi.legalized.with_getTempRet0.wasm
+wat2wasm \
+    --debug-names \
+    ./js_ffi.legalized.with_getTempRet0.wat \
+    -o ./js_ffi.legalized.with_getTempRet0.wasm
 
 # wasm2wat \
 #    -f \
